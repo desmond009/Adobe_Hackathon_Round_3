@@ -219,17 +219,126 @@ schema-valid without either.
 
 ## 13. Usage
 
+Activate the venv first, every session:
+
 ```bash
-# Full pipeline, one process, one shared crawl:
+cd /Users/vijender/Documents/Adobe_Project
+source .venv/bin/activate
+```
+
+### Run the full pipeline against any real site
+
+```bash
 python skills/audit-orchestrator/scripts/run_audit.py example.com
 python skills/audit-orchestrator/scripts/run_audit.py https://example.com --out report.json
-
-# Manual, skill-by-skill (sharing one crawl across separate tool calls):
-python skills/crawl-render-audit/scripts/analyze.py --url example.com --save-snapshot snap.json
-python skills/structured-data-audit/scripts/analyze.py --snapshot snap.json > sd.json
-# ...repeat per specialized skill...
-python skills/recommendation-engine/scripts/assemble_report.py --site example.com --findings *.json
 ```
+
+Progress logs go to stderr (`[CRAWLER]`, `[STRUCTURED-DATA-AUDIT]`, `[ORCHESTRATOR]`, ...);
+stdout carries only the JSON report, so `... > report.json` gives clean JSON.
+
+### Tune crawl size/time without editing config
+
+Every value in `config/default.yaml` is overridable via
+`BRAND_AUDIT__<SECTION>__<KEY>` env vars:
+
+```bash
+BRAND_AUDIT__CRAWL__MAX_PAGES=5 BRAND_AUDIT__CRAWL__OVERALL_BUDGET_S=30 \
+    python skills/audit-orchestrator/scripts/run_audit.py example.com
+```
+
+### Run one specialized skill in isolation
+
+```bash
+python skills/structured-data-audit/scripts/analyze.py --url example.com
+```
+
+Every one of the six analyzer skills supports the same `--url` (standalone,
+bounded crawl) / `--snapshot <file>` (shared-snapshot) flags — see each
+skill's `SKILL.md`.
+
+### Chain all 6 skills manually + assemble (proves the skill decomposition)
+
+Shares one crawl across separate tool calls, the way an agent invoking each
+skill independently would:
+
+```bash
+python skills/crawl-render-audit/scripts/analyze.py --url example.com --save-snapshot /tmp/snap.json
+python skills/structured-data-audit/scripts/analyze.py --snapshot /tmp/snap.json > /tmp/sd.json
+python skills/content-extractability-audit/scripts/analyze.py --snapshot /tmp/snap.json > /tmp/ce.json
+python skills/freshness-corroboration-audit/scripts/analyze.py --snapshot /tmp/snap.json > /tmp/fr.json
+python skills/entity-identity-audit/scripts/analyze.py --snapshot /tmp/snap.json > /tmp/ei.json
+python skills/engagement-audit/scripts/analyze.py --snapshot /tmp/snap.json > /tmp/en.json
+python skills/crawl-render-audit/scripts/analyze.py --snapshot /tmp/snap.json > /tmp/cr.json
+python skills/recommendation-engine/scripts/assemble_report.py --site example.com \
+    --findings /tmp/cr.json /tmp/sd.json /tmp/ce.json /tmp/fr.json /tmp/ei.json /tmp/en.json
+```
+
+### Validate structural compliance
+
+```bash
+python scripts/validate_marketplace.py         # marketplace.json + all 8 SKILL.md files
+python scripts/validate_report.py report.json  # any report against the mandated schema
+```
+
+### Enable optional layers
+
+```bash
+# LLM recommendation polish (bounded to the top 8 findings by severity):
+export ANTHROPIC_API_KEY=sk-...
+python skills/audit-orchestrator/scripts/run_audit.py example.com
+
+# Real render-delta checks (not installed by default):
+pip install playwright && playwright install chromium
+```
+
+### Testing every use case, three ways
+
+**A. The automated suite** — fastest, covers most cases in ~2 seconds, fully
+offline (no real network calls):
+
+```bash
+pip install -r requirements-dev.txt
+pytest tests/ -v
+```
+
+**B. Exercise one fixture "scenario" by hand and read the actual JSON** — each
+fixture under `tests/fixtures/sites/` is a deliberately different situation:
+
+| Fixture | What it proves |
+|---|---|
+| `good_ecommerce` | A well-built small site gets **zero critical findings** |
+| `spa_js_only` | JS-dependent content gets flagged correctly (and only then) |
+| `poorly_structured` | A genuinely bad site trips findings across many categories |
+| `http://127.0.0.1:1/` (nothing listening) | Total failure -> exactly one clear finding, not noise |
+
+```python
+from pathlib import Path
+from tests.integration.server import serve_fixture
+from audit_engine.orchestrator import run_audit
+from audit_engine.config import load_config
+
+cfg = load_config()
+with serve_fixture(Path("tests/fixtures/sites/poorly_structured")) as base_url:
+    report = run_audit(base_url, cfg)
+    print(report["summary"])
+    for f in report["findings"]:
+        print(f["severity"], f["category"], f["title"])
+```
+
+(Or just read `tests/integration/test_fixture_sites.py` — those four tests
+are exactly this, already assertion-checked.)
+
+**C. Real, unseen websites** (the actual hackathon scenario — generalization
+is never hardcoded to a domain):
+
+```bash
+python skills/audit-orchestrator/scripts/run_audit.py stripe.com
+python skills/audit-orchestrator/scripts/run_audit.py <any other domain>
+```
+
+A real run against `stripe.com` (server-rendered) correctly produces **no**
+JS-dependency finding, proving the checker doesn't just flag "modern site" —
+only a confirmed render gap or multiple agreeing static signals trigger it.
 
 ## 14. Example output
 
