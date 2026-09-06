@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Nimbus</title>
+<script src="/static/vendor.bundle.js"></script>
+<script src="/static/app.bundle.js"></script>
+<script src="/static/runtime.bundle.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<noscript>Please enable JavaScript to run this application. Nimbus is a project management tool for
+distributed engineering teams, offering sprint boards, timeline views, and integrations with common
+developer tools. Contact us to learn more about pricing and enterprise plans.</noscript>
+<script>
+  // Simulated large client bundle reference (kept inline so the fixture is self-contained;
+  // a real SPA would load this from vendor.bundle.js). This is filler to make the script-to-text
+  // byte ratio realistic for the js_dependency_score heuristic under test.
+  window.__NIMBUS_CONFIG__ = { apiBase: "/api", featureFlags: { boards: true, timelines: true } };
+  function boot() { /* mount React/Vue/etc. app into #root at runtime */ }
+  boot();
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+{
+  "$schema": "./scripts/marketplace.schema.json",
+  "name": "brand-ai-readiness-audit",
+  "version": "1.0.0",
+  "description": "An Agent Skill Marketplace that audits how discoverable, machine-readable, and engaging a website is to AI agents and answer engines, and returns one evidence-backed JSON report.",
+  "owner": {
+    "name": "Adobe University Hackathon 2026 submission",
+    "contact": "cortexbyhobbyfi@gmail.com"
+  },
+  "entrypoint": "audit-orchestrator",
+  "skills": [
+    {
+      "id": "audit-orchestrator",
+      "path": "skills/audit-orchestrator",
+      "entrypoint": true,
+      "summary": "Validates the input site, runs the shared crawl, invokes the six specialized audits, and assembles the final validated report. This is the only skill an end user calls directly."
+    },
+    {
+      "id": "crawl-render-audit",
+      "path": "skills/crawl-render-audit",
+      "entrypoint": false,
+      "summary": "Crawlability and render-fidelity: robots.txt, sitemap, canonical hygiene, broken links, and JS-dependent content detection."
+    },
+    {
+      "id": "structured-data-audit",
+      "path": "skills/structured-data-audit",
+      "entrypoint": false,
+      "summary": "schema.org coverage and correctness: JSON-LD/Microdata/RDFa presence, completeness, validity, and consistency with visible content."
+    },
+    {
+      "id": "content-extractability-audit",
+      "path": "skills/content-extractability-audit",
+      "entrypoint": false,
+      "summary": "Whether a machine can extract who/what/who-for/where from the site's actual machine-readable text, independent of structured data."
+    },
+    {
+      "id": "freshness-corroboration-audit",
+      "path": "skills/freshness-corroboration-audit",
+      "entrypoint": false,
+      "summary": "Publication/modification date signals, staleness, and cross-page fact consistency, with explicit limitations where external corroboration is unavailable."
+    },
+    {
+      "id": "entity-identity-audit",
+      "path": "skills/entity-identity-audit",
+      "entrypoint": false,
+      "summary": "Whether the site establishes a single, unambiguous organizational identity an AI system could not confuse with another entity."
+    },
+    {
+      "id": "engagement-audit",
+      "path": "skills/engagement-audit",
+      "entrypoint": false,
+      "summary": "On-site engagement: homepage orientation, clear next actions, internal-linking health, and dead ends."
+    },
+    {
+      "id": "recommendation-engine",
+      "path": "skills/recommendation-engine",
+      "entrypoint": false,
+      "summary": "Deduplicates findings by root cause, refines recommendations (optionally via LLM synthesis), prioritizes, and assembles the final schema-valid report."
+    }
+  ]
+}

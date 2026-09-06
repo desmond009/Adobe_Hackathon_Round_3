@@ -1,0 +1,41 @@
+# Default configuration for the Brand AI-Readiness Audit engine.
+# Every tunable that governs crawl scope, rendering, analysis and reporting lives here
+# so that no script hardcodes a magic number. Override any key via environment variable
+# BRAND_AUDIT__<SECTION>__<KEY> (double underscore separated, e.g. BRAND_AUDIT__CRAWL__MAX_PAGES=40)
+# or by pointing --config at an alternate YAML file with the same shape.
+
+crawl:
+  max_pages: 25          # hard cap on pages fetched per audit (keeps runtime < 5 min)
+  max_depth: 3            # BFS/priority depth from the seed URL
+  concurrency: 5          # bounded thread pool for polite parallel fetching
+  request_timeout_s: 10   # per-request timeout
+  overall_budget_s: 150   # wall-clock budget for the crawl stage; crawler stops early past this
+  max_response_size_bytes: 2097152   # 2 MB per page; larger responses are truncated/skipped
+  max_redirects: 5
+  user_agent: "AdobeBrandAIReadinessAuditBot/1.0 (+https://adobe.com; read-only hackathon audit bot)"
+  respect_robots_txt: true
+  allowed_content_types: ["text/html", "application/xhtml+xml"]
+  # URL query parameters stripped during normalization (tracking noise, not identity)
+  tracking_params: ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
+                     "gclid", "fbclid", "msclkid", "ref", "mc_cid", "mc_eid", "_ga"]
+  # URL/link-text keywords used to prioritize crawl order toward pages likely to carry
+  # identity/commerce signal, so a bounded crawl still samples the pages that matter.
+  priority_keywords: ["about", "contact", "product", "products", "service", "services",
+                       "pricing", "plans", "faq", "help", "support", "company", "team",
+                       "location", "locations", "store", "shop"]
+
+render:
+  enabled: true           # attempt the render-delta stage at all
+  use_playwright_if_available: true
+  max_pages_to_render: 5  # only render pages flagged "suspicious" by static heuristics
+  render_timeout_s: 15
+
+analysis:
+  confidence_threshold: 0.55   # findings below this confidence are dropped, not reported
+  llm_enabled: true             # attempt LLM interpretation when ANTHROPIC_API_KEY is set
+  llm_model: "claude-sonnet-5"
+  min_sample_size_for_scope_claims: 3  # below this, scope language is hedged in evidence text
+
+report:
+  max_findings: 30
+  schema_path: "audit_engine/report/schema.json"

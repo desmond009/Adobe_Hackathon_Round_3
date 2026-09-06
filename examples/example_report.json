@@ -1,0 +1,573 @@
+{
+  "site": "python.org",
+  "audited_at": "2026-09-06T19:25:09Z",
+  "summary": {
+    "total_findings": 11,
+    "critical": 0,
+    "high": 6,
+    "medium": 4,
+    "low": 1
+  },
+  "findings": [
+    {
+      "id": "F-011",
+      "category": "entity_identity",
+      "title": "The organization's name is rendered inconsistently across the site",
+      "severity": "high",
+      "confidence": 0.75,
+      "evidence": "Organization name rendered as 'Python documentation' (source: og:site_name) (expected: Consistent with the dominant form 'Python.org'); Organization name rendered as 'Python documentation' (source: og:site_name) (expected: Consistent with the dominant form 'Python.org'); Organization name rendered as 'Python Software Foundation' (source: title) (expected: Consistent with the dominant form 'Python.org'); Organization name rendered as 'Python Software Foundation' (source: title) (expected: Consistent with the dominant form 'Python.org')",
+      "evidence_detail": [
+        {
+          "url": "https://docs.python.org/3/faq",
+          "signal": "org_name_variant",
+          "observation": "Organization name rendered as 'Python documentation' (source: og:site_name)",
+          "expected": "Consistent with the dominant form 'Python.org'",
+          "confidence": 0.75
+        },
+        {
+          "url": "https://docs.python.org/",
+          "signal": "org_name_variant",
+          "observation": "Organization name rendered as 'Python documentation' (source: og:site_name)",
+          "expected": "Consistent with the dominant form 'Python.org'",
+          "confidence": 0.75
+        },
+        {
+          "url": "https://www.python.org/about/legal",
+          "signal": "org_name_variant",
+          "observation": "Organization name rendered as 'Python Software Foundation' (source: title)",
+          "expected": "Consistent with the dominant form 'Python.org'",
+          "confidence": 0.75
+        },
+        {
+          "url": "https://donate.python.org/",
+          "signal": "org_name_variant",
+          "observation": "Organization name rendered as 'Python Software Foundation' (source: title)",
+          "expected": "Consistent with the dominant form 'Python.org'",
+          "confidence": 0.75
+        }
+      ],
+      "affected_urls": [
+        "https://docs.python.org/",
+        "https://docs.python.org/3/faq",
+        "https://donate.python.org/",
+        "https://www.python.org/about/legal"
+      ],
+      "related_group": null,
+      "priority_rank": 1,
+      "suggested_action": {
+        "summary": "Standardize on one canonical brand name (observed dominant form: 'Python.org') across page titles, meta tags, structured data, and footer text, so AI systems don't treat name variants as different entities.",
+        "priority": "high",
+        "rationale": null,
+        "proactive": false
+      }
+    },
+    {
+      "id": "F-005",
+      "category": "structured_data",
+      "title": "LocalBusiness structured data missing where a physical location is implied",
+      "severity": "high",
+      "confidence": 0.65,
+      "evidence": "Page text references a physical location/hours but no LocalBusiness structured data was found anywhere on the crawled site; Page text references a physical location/hours but no LocalBusiness structured data was found anywhere on the crawled site; Page text references a physical location/hours but no LocalBusiness structured data was found anywhere on the crawled site",
+      "evidence_detail": [
+        {
+          "url": "https://peps.python.org/",
+          "signal": "localbusiness_schema_absent",
+          "observation": "Page text references a physical location/hours but no LocalBusiness structured data was found anywhere on the crawled site",
+          "expected": null,
+          "confidence": 0.65
+        },
+        {
+          "url": "https://www.python.org/jobs",
+          "signal": "localbusiness_schema_absent",
+          "observation": "Page text references a physical location/hours but no LocalBusiness structured data was found anywhere on the crawled site",
+          "expected": null,
+          "confidence": 0.65
+        },
+        {
+          "url": "https://donate.python.org/",
+          "signal": "localbusiness_schema_absent",
+          "observation": "Page text references a physical location/hours but no LocalBusiness structured data was found anywhere on the crawled site",
+          "expected": null,
+          "confidence": 0.65
+        }
+      ],
+      "affected_urls": [
+        "https://donate.python.org/",
+        "https://peps.python.org/",
+        "https://www.python.org/jobs"
+      ],
+      "related_group": null,
+      "priority_rank": 2,
+      "suggested_action": {
+        "summary": "Add LocalBusiness JSON-LD (address, openingHours, telephone, geo) to pages that describe a physical presence.",
+        "priority": "high",
+        "rationale": null,
+        "proactive": false
+      }
+    },
+    {
+      "id": "F-004",
+      "category": "structured_data",
+      "title": "Structured data present but missing required/expected properties",
+      "severity": "high",
+      "confidence": 0.85,
+      "evidence": "Organization/WebSite structured data is missing: name, logo (expected: Properties present: name, url, logo)",
+      "evidence_detail": [
+        {
+          "url": "https://python.org/",
+          "signal": "jsonld_organization_incomplete",
+          "observation": "Organization/WebSite structured data is missing: name, logo",
+          "expected": "Properties present: name, url, logo",
+          "confidence": 0.85
+        }
+      ],
+      "affected_urls": [
+        "https://python.org/"
+      ],
+      "related_group": "RG-01",
+      "priority_rank": 3,
+      "suggested_action": {
+        "summary": "Add the missing name, logo properties to the homepage's Organization structured data.",
+        "priority": "high",
+        "rationale": null,
+        "proactive": false
+      }
+    },
+    {
+      "id": "F-001",
+      "category": "crawlability",
+      "title": "No XML sitemap discovered",
+      "severity": "high",
+      "confidence": 0.85,
+      "evidence": "No sitemap.xml discovered via robots.txt Sitemap: directive or /sitemap.xml",
+      "evidence_detail": [
+        {
+          "url": "https://python.org/",
+          "signal": "sitemap_absent",
+          "observation": "No sitemap.xml discovered via robots.txt Sitemap: directive or /sitemap.xml",
+          "expected": null,
+          "confidence": 0.85
+        }
+      ],
+      "affected_urls": [
+        "https://python.org/"
+      ],
+      "related_group": "RG-01",
+      "priority_rank": 4,
+      "suggested_action": {
+        "summary": "Publish an XML sitemap listing canonical URLs for all indexable pages and declare it in robots.txt via a Sitemap: directive.",
+        "priority": "high",
+        "rationale": null,
+        "proactive": false
+      }
+    },
+    {
+      "id": "F-008",
+      "category": "content_extractability",
+      "title": "Machine-readable content does not identify a target audience",
+      "severity": "high",
+      "confidence": 0.6,
+      "evidence": "No target-audience language (e.g. 'for small businesses', 'built for teams') found across 13 key pages checked",
+      "evidence_detail": [
+        {
+          "url": "https://python.org/",
+          "signal": "audience_language_absent",
+          "observation": "No target-audience language (e.g. 'for small businesses', 'built for teams') found across 13 key pages checked",
+          "expected": null,
+          "confidence": 0.6
+        }
+      ],
+      "affected_urls": [
+        "https://python.org/"
+      ],
+      "related_group": "RG-01",
+      "priority_rank": 5,
+      "suggested_action": {
+        "summary": "Add explicit audience-framing language to the homepage or about page (e.g. who the product/service is designed for) so both humans and AI agents can match the right visitor to the right offering.",
+        "priority": "high",
+        "rationale": null,
+        "proactive": false
+      }
+    },
+    {
+      "id": "F-003",
+      "category": "crawlability",
+      "title": "Pages missing canonical tags",
+      "severity": "high",
+      "confidence": 0.85,
+      "evidence": "No <link rel=canonical> found on https://python.org/; No <link rel=canonical> found on https://www.python.org/about/apps; No <link rel=canonical> found on https://www.python.org/about/gettingstarted; No <link rel=canonical> found on https://www.python.org/about/quotes; No <link rel=canonical> found on https://www.python.org/about/help; No <link rel=canonical> found on https://www.python.org/community/workshops; No <link rel=canonical> found on https://www.python.org/; No <link rel=canonical> found on https://www.python.org/about",
+      "evidence_detail": [
+        {
+          "url": "https://python.org/",
+          "signal": "canonical_missing",
+          "observation": "No <link rel=canonical> found on https://python.org/",
+          "expected": null,
+          "confidence": 1.0
+        },
+        {
+          "url": "https://www.python.org/about/apps",
+          "signal": "canonical_missing",
+          "observation": "No <link rel=canonical> found on https://www.python.org/about/apps",
+          "expected": null,
+          "confidence": 1.0
+        },
+        {
+          "url": "https://www.python.org/about/gettingstarted",
+          "signal": "canonical_missing",
+          "observation": "No <link rel=canonical> found on https://www.python.org/about/gettingstarted",
+          "expected": null,
+          "confidence": 1.0
+        },
+        {
+          "url": "https://www.python.org/about/quotes",
+          "signal": "canonical_missing",
+          "observation": "No <link rel=canonical> found on https://www.python.org/about/quotes",
+          "expected": null,
+          "confidence": 1.0
+        },
+        {
+          "url": "https://www.python.org/about/help",
+          "signal": "canonical_missing",
+          "observation": "No <link rel=canonical> found on https://www.python.org/about/help",
+          "expected": null,
+          "confidence": 1.0
+        },
+        {
+          "url": "https://www.python.org/community/workshops",
+          "signal": "canonical_missing",
+          "observation": "No <link rel=canonical> found on https://www.python.org/community/workshops",
+          "expected": null,
+          "confidence": 1.0
+        },
+        {
+          "url": "https://www.python.org/",
+          "signal": "canonical_missing",
+          "observation": "No <link rel=canonical> found on https://www.python.org/",
+          "expected": null,
+          "confidence": 1.0
+        },
+        {
+          "url": "https://www.python.org/about",
+          "signal": "canonical_missing",
+          "observation": "No <link rel=canonical> found on https://www.python.org/about",
+          "expected": null,
+          "confidence": 1.0
+        }
+      ],
+      "affected_urls": [
+        "https://python.org/",
+        "https://www.python.org/",
+        "https://www.python.org/about",
+        "https://www.python.org/about/apps",
+        "https://www.python.org/about/gettingstarted",
+        "https://www.python.org/about/help",
+        "https://www.python.org/about/quotes",
+        "https://www.python.org/community/workshops"
+      ],
+      "related_group": "RG-02",
+      "priority_rank": 6,
+      "suggested_action": {
+        "summary": "Add self-referencing canonical tags to the 19/24 crawled pages missing them, so crawlers and AI agents can resolve one authoritative URL per piece of content.",
+        "priority": "high",
+        "rationale": null,
+        "proactive": false
+      }
+    },
+    {
+      "id": "F-002",
+      "category": "crawlability",
+      "title": "Broken internal links found",
+      "severity": "medium",
+      "confidence": 0.9,
+      "evidence": "Link to https://wiki.python.org/moin returns HTTP 404; Link to https://wiki.python.org/moin returns HTTP 404; Link to https://wiki.python.org/moin returns HTTP 404; Link to https://wiki.python.org/moin returns HTTP 404; Link to https://wiki.python.org/moin returns HTTP 404; Link to https://wiki.python.org/moin returns HTTP 404; Link to https://wiki.python.org/moin returns HTTP 404; Link to https://wiki.python.org/moin returns HTTP 404",
+      "evidence_detail": [
+        {
+          "url": "https://python.org/",
+          "signal": "broken_internal_link",
+          "observation": "Link to https://wiki.python.org/moin returns HTTP 404",
+          "expected": null,
+          "confidence": 0.9
+        },
+        {
+          "url": "https://www.python.org/about/apps",
+          "signal": "broken_internal_link",
+          "observation": "Link to https://wiki.python.org/moin returns HTTP 404",
+          "expected": null,
+          "confidence": 0.9
+        },
+        {
+          "url": "https://www.python.org/about/gettingstarted",
+          "signal": "broken_internal_link",
+          "observation": "Link to https://wiki.python.org/moin returns HTTP 404",
+          "expected": null,
+          "confidence": 0.9
+        },
+        {
+          "url": "https://www.python.org/about/quotes",
+          "signal": "broken_internal_link",
+          "observation": "Link to https://wiki.python.org/moin returns HTTP 404",
+          "expected": null,
+          "confidence": 0.9
+        },
+        {
+          "url": "https://www.python.org/about/help",
+          "signal": "broken_internal_link",
+          "observation": "Link to https://wiki.python.org/moin returns HTTP 404",
+          "expected": null,
+          "confidence": 0.9
+        },
+        {
+          "url": "https://www.python.org/community/workshops",
+          "signal": "broken_internal_link",
+          "observation": "Link to https://wiki.python.org/moin returns HTTP 404",
+          "expected": null,
+          "confidence": 0.9
+        },
+        {
+          "url": "https://www.python.org/",
+          "signal": "broken_internal_link",
+          "observation": "Link to https://wiki.python.org/moin returns HTTP 404",
+          "expected": null,
+          "confidence": 0.9
+        },
+        {
+          "url": "https://www.python.org/about",
+          "signal": "broken_internal_link",
+          "observation": "Link to https://wiki.python.org/moin returns HTTP 404",
+          "expected": null,
+          "confidence": 0.9
+        }
+      ],
+      "affected_urls": [
+        "https://python.org/",
+        "https://www.python.org/",
+        "https://www.python.org/about",
+        "https://www.python.org/about/apps",
+        "https://www.python.org/about/gettingstarted",
+        "https://www.python.org/about/help",
+        "https://www.python.org/about/quotes",
+        "https://www.python.org/community/workshops"
+      ],
+      "related_group": "RG-02",
+      "priority_rank": 7,
+      "suggested_action": {
+        "summary": "Fix or remove 17 broken internal link(s) found across 24 crawled pages; broken links block both crawlers and users from reaching linked content.",
+        "priority": "medium",
+        "rationale": null,
+        "proactive": false
+      }
+    },
+    {
+      "id": "F-010",
+      "category": "freshness_corroboration",
+      "title": "Contact information differs between pages that should agree",
+      "severity": "medium",
+      "confidence": 0.65,
+      "evidence": "Page lists phone number(s): 377 610 987, 666666666666, 89 144 233 (expected: A single consistent phone number across all pages); Page lists phone number(s): 377 610 987, 666666666666, 89 144 233 (expected: A single consistent phone number across all pages); Page lists phone number(s): 359101898 (expected: A single consistent phone number across all pages)",
+      "evidence_detail": [
+        {
+          "url": "https://python.org/",
+          "signal": "phone_number_disagreement",
+          "observation": "Page lists phone number(s): 377 610 987, 666666666666, 89 144 233",
+          "expected": "A single consistent phone number across all pages",
+          "confidence": 0.65
+        },
+        {
+          "url": "https://www.python.org/",
+          "signal": "phone_number_disagreement",
+          "observation": "Page lists phone number(s): 377 610 987, 666666666666, 89 144 233",
+          "expected": "A single consistent phone number across all pages",
+          "confidence": 0.65
+        },
+        {
+          "url": "https://peps.python.org/",
+          "signal": "phone_number_disagreement",
+          "observation": "Page lists phone number(s): 359101898",
+          "expected": "A single consistent phone number across all pages",
+          "confidence": 0.65
+        }
+      ],
+      "affected_urls": [
+        "https://peps.python.org/",
+        "https://python.org/",
+        "https://www.python.org/"
+      ],
+      "related_group": null,
+      "priority_rank": 8,
+      "suggested_action": {
+        "summary": "Reconcile phone numbers shown across pages to a single current number, or clearly label region/department-specific numbers so the difference isn't mistaken for stale information.",
+        "priority": "medium",
+        "rationale": null,
+        "proactive": false
+      }
+    },
+    {
+      "id": "F-009",
+      "category": "content_extractability",
+      "title": "Poor heading structure impairs machine parsing of page hierarchy",
+      "severity": "medium",
+      "confidence": 0.75,
+      "evidence": "Page has 997 words but 5 H1 headings (expected exactly 1); Page has 638 words but 7 H1 headings (expected exactly 1); Page has 700 words but 6 H1 headings (expected exactly 1); Page has 1188 words but 13 H1 headings (expected exactly 1); Page has 622 words but 10 H1 headings (expected exactly 1); Page has 417 words but 4 H1 headings (expected exactly 1); Page has 997 words but 5 H1 headings (expected exactly 1); Page has 10544 words but 2 H1 headings (expected exactly 1)",
+      "evidence_detail": [
+        {
+          "url": "https://python.org/",
+          "signal": "heading_hierarchy_issue",
+          "observation": "Page has 997 words but 5 H1 headings (expected exactly 1)",
+          "expected": null,
+          "confidence": 0.75
+        },
+        {
+          "url": "https://www.python.org/about/apps",
+          "signal": "heading_hierarchy_issue",
+          "observation": "Page has 638 words but 7 H1 headings (expected exactly 1)",
+          "expected": null,
+          "confidence": 0.75
+        },
+        {
+          "url": "https://www.python.org/about/gettingstarted",
+          "signal": "heading_hierarchy_issue",
+          "observation": "Page has 700 words but 6 H1 headings (expected exactly 1)",
+          "expected": null,
+          "confidence": 0.75
+        },
+        {
+          "url": "https://www.python.org/about/quotes",
+          "signal": "heading_hierarchy_issue",
+          "observation": "Page has 1188 words but 13 H1 headings (expected exactly 1)",
+          "expected": null,
+          "confidence": 0.75
+        },
+        {
+          "url": "https://www.python.org/about/help",
+          "signal": "heading_hierarchy_issue",
+          "observation": "Page has 622 words but 10 H1 headings (expected exactly 1)",
+          "expected": null,
+          "confidence": 0.75
+        },
+        {
+          "url": "https://www.python.org/community/workshops",
+          "signal": "heading_hierarchy_issue",
+          "observation": "Page has 417 words but 4 H1 headings (expected exactly 1)",
+          "expected": null,
+          "confidence": 0.75
+        },
+        {
+          "url": "https://www.python.org/",
+          "signal": "heading_hierarchy_issue",
+          "observation": "Page has 997 words but 5 H1 headings (expected exactly 1)",
+          "expected": null,
+          "confidence": 0.75
+        },
+        {
+          "url": "https://peps.python.org/",
+          "signal": "heading_hierarchy_issue",
+          "observation": "Page has 10544 words but 2 H1 headings (expected exactly 1)",
+          "expected": null,
+          "confidence": 0.75
+        }
+      ],
+      "affected_urls": [
+        "https://peps.python.org/",
+        "https://python.org/",
+        "https://www.python.org/",
+        "https://www.python.org/about/apps",
+        "https://www.python.org/about/gettingstarted",
+        "https://www.python.org/about/help",
+        "https://www.python.org/about/quotes",
+        "https://www.python.org/community/workshops"
+      ],
+      "related_group": "RG-02",
+      "priority_rank": 9,
+      "suggested_action": {
+        "summary": "Ensure every substantial page has exactly one H1 and a logical H2/H3 hierarchy beneath it, so machine parsers can reconstruct page structure without relying on visual layout.",
+        "priority": "medium",
+        "rationale": null,
+        "proactive": false
+      }
+    },
+    {
+      "id": "F-007",
+      "category": "structured_data",
+      "title": "No BreadcrumbList structured data despite clear site hierarchy",
+      "severity": "medium",
+      "confidence": 0.6,
+      "evidence": "Multi-segment URL path implies a category hierarchy with no BreadcrumbList markup; Multi-segment URL path implies a category hierarchy with no BreadcrumbList markup; Multi-segment URL path implies a category hierarchy with no BreadcrumbList markup; Multi-segment URL path implies a category hierarchy with no BreadcrumbList markup",
+      "evidence_detail": [
+        {
+          "url": "https://www.python.org/about/apps",
+          "signal": "breadcrumb_schema_absent",
+          "observation": "Multi-segment URL path implies a category hierarchy with no BreadcrumbList markup",
+          "expected": null,
+          "confidence": 0.6
+        },
+        {
+          "url": "https://www.python.org/about/gettingstarted",
+          "signal": "breadcrumb_schema_absent",
+          "observation": "Multi-segment URL path implies a category hierarchy with no BreadcrumbList markup",
+          "expected": null,
+          "confidence": 0.6
+        },
+        {
+          "url": "https://www.python.org/about/quotes",
+          "signal": "breadcrumb_schema_absent",
+          "observation": "Multi-segment URL path implies a category hierarchy with no BreadcrumbList markup",
+          "expected": null,
+          "confidence": 0.6
+        },
+        {
+          "url": "https://www.python.org/about/help",
+          "signal": "breadcrumb_schema_absent",
+          "observation": "Multi-segment URL path implies a category hierarchy with no BreadcrumbList markup",
+          "expected": null,
+          "confidence": 0.6
+        }
+      ],
+      "affected_urls": [
+        "https://www.python.org/about/apps",
+        "https://www.python.org/about/gettingstarted",
+        "https://www.python.org/about/help",
+        "https://www.python.org/about/quotes"
+      ],
+      "related_group": "RG-02",
+      "priority_rank": 10,
+      "suggested_action": {
+        "summary": "Add BreadcrumbList JSON-LD reflecting the site's category/product hierarchy on deep pages to make the navigational path machine-readable.",
+        "priority": "medium",
+        "rationale": null,
+        "proactive": true
+      }
+    },
+    {
+      "id": "F-006",
+      "category": "structured_data",
+      "title": "FAQ-shaped content is not marked up as FAQPage",
+      "severity": "low",
+      "confidence": 0.7,
+      "evidence": "9 question-shaped headings found with no FAQPage structured data",
+      "evidence_detail": [
+        {
+          "url": "https://www.python.org/about/help",
+          "signal": "faq_shaped_content_unmarked",
+          "observation": "9 question-shaped headings found with no FAQPage structured data",
+          "expected": null,
+          "confidence": 0.7
+        }
+      ],
+      "affected_urls": [
+        "https://www.python.org/about/help"
+      ],
+      "related_group": null,
+      "priority_rank": 11,
+      "suggested_action": {
+        "summary": "Mark up the existing question/answer content as FAQPage JSON-LD so AI answer engines can cite it directly.",
+        "priority": "low",
+        "rationale": null,
+        "proactive": true
+      }
+    }
+  ],
+  "limitations": [
+    "LLM interpretation layer ran in deterministic-fallback mode (no ANTHROPIC_API_KEY set); all findings and recommendations below are rule-based, not LLM-generated.",
+    "External corroboration was not performed: this build only observes and cross-checks on-site facts. No claim in this report should be read as independently verified against outside sources."
+  ]
+}

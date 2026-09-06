@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Brand AI-Readiness Audit Report",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["site", "audited_at", "summary", "findings"],
+  "properties": {
+    "site": { "type": "string", "minLength": 1 },
+    "audited_at": { "type": "string", "format": "date-time" },
+    "summary": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["total_findings", "critical", "high", "medium"],
+      "properties": {
+        "total_findings": { "type": "integer", "minimum": 0 },
+        "critical": { "type": "integer", "minimum": 0 },
+        "high": { "type": "integer", "minimum": 0 },
+        "medium": { "type": "integer", "minimum": 0 },
+        "low": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["id", "title", "severity", "evidence", "suggested_action"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "severity": { "type": "string", "enum": ["critical", "high", "medium", "low"] },
+          "evidence": { "type": "string", "minLength": 1 },
+          "suggested_action": {
+            "type": "object",
+            "additionalProperties": true,
+            "required": ["summary", "priority"],
+            "properties": {
+              "summary": { "type": "string", "minLength": 1 },
+              "priority": { "type": "string", "enum": ["critical", "high", "medium", "low"] }
+            }
+          }
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

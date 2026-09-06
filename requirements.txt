@@ -1,0 +1,21 @@
+# Core runtime dependencies for the Brand AI-Readiness Audit engine.
+# Kept intentionally small: every dependency here is load-bearing.
+#
+# requests        - HTTP client for the crawler (connection pooling, timeouts, streaming)
+# beautifulsoup4  - HTML parsing / DOM traversal
+# lxml            - fast HTML parser backend for BeautifulSoup
+# jsonschema      - validates the final audit report against report/schema.json
+# PyYAML          - loads config/default.yaml
+requests>=2.31,<3
+beautifulsoup4>=4.12,<5
+lxml>=5.2,<6
+jsonschema>=4.21,<5
+PyYAML>=6.0,<7
+
+# Optional, not required at import time (guarded by try/except at the call site):
+# anthropic     - enables the LLM interpretation layer (audit_engine/intelligence/llm_interpret.py).
+#                 Without it (or without ANTHROPIC_API_KEY), the pipeline runs fully deterministic
+#                 rule-based fallbacks and produces an equally schema-valid report.
+# playwright    - enables real headless-browser rendering for the render-delta check in
+#                 crawl-render-audit. Without it, that check runs on static heuristics only and
+#                 the report says so explicitly instead of guessing.

@@ -1,0 +1,13 @@
+[AUDIT] Starting audit for python.org
+[CRAWLER] robots.txt found; allowed=True
+[CRAWLER] 2739 URLs discovered, 24 pages crawled (1 failed, stopped: max_pages)
+[CRAWL-RENDER-AUDIT] 3 candidate(s) evaluated, 3 finding(s) emitted
+[STRUCTURED-DATA-AUDIT] 4 candidate(s) evaluated, 4 finding(s) emitted
+[CONTENT-EXTRACTABILITY-AUDIT] 2 candidate(s) evaluated, 2 finding(s) emitted
+[FRESHNESS-CORROBORATION-AUDIT] 1 candidate(s) evaluated, 1 finding(s) emitted
+[ENTITY-IDENTITY-AUDIT] 1 candidate(s) evaluated, 1 finding(s) emitted
+[ENGAGEMENT-AUDIT] 0 candidate(s) evaluated, 0 finding(s) emitted
+[ORCHESTRATOR] 11 raw findings before deduplication
+[ORCHESTRATOR] 11 findings after deduplication
+[REPORT] Final report generated with 11 findings
+Report written to examples/example_report.json
