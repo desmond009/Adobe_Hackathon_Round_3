@@ -8,6 +8,34 @@ AI agents and answer engines — and returns one evidence-backed JSON report.
 python skills/audit-orchestrator/scripts/run_audit.py example.com
 ```
 
+## What each skill does, and how the entrypoint composes them
+
+`audit-orchestrator` is the marketplace's **only entrypoint**. Given a
+domain or URL it validates the input, runs one bounded read-only crawl, and
+hands the resulting `SiteSnapshot` to six specialized audit skills — each
+invoked in-process against that *same* snapshot, so nothing crawls the site
+twice:
+
+| Skill | What it checks |
+|---|---|
+| `crawl-render-audit` | robots.txt, sitemap, canonical hygiene, broken links, JS-dependent content |
+| `structured-data-audit` | JSON-LD/Microdata/RDFa coverage, correctness, consistency with visible content |
+| `content-extractability-audit` | Can a machine answer who/what/who-for/where from extractable text |
+| `freshness-corroboration-audit` | Date signals, staleness, cross-page fact consistency |
+| `entity-identity-audit` | One unambiguous brand identity, or several an AI could confuse |
+| `engagement-audit` | Orientation, next-action, internal-linking health |
+
+Every skill's raw findings then go to `recommendation-engine`, which
+deduplicates by root cause, optionally polishes wording via a bounded LLM
+call, prioritizes, and assembles + validates the one final JSON report
+against `audit_engine/report/schema.json` — failing loudly rather than ever
+returning malformed JSON. Every skill can also run standalone
+(`analyze.py --url <site>`); see §3 and §13 below for exact invocation.
+
+The sections below go deeper — full architecture, data flow, severity
+model, evidence model, and usage — for anyone auditing the implementation
+itself, not just what it does.
+
 ## 1. Problem
 
 AI agents and answer engines now read websites on behalf of users — to
