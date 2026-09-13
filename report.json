@@ -1,0 +1,145 @@
+{
+  "site": "shopify.com",
+  "audited_at": "2026-09-13T06:06:14Z",
+  "summary": {
+    "total_findings": 4,
+    "critical": 1,
+    "high": 3,
+    "medium": 0,
+    "low": 0
+  },
+  "findings": [
+    {
+      "id": "F-004",
+      "category": "engagement",
+      "title": "Homepage does not clearly state what the business does within the first content block",
+      "severity": "critical",
+      "confidence": 0.65,
+      "evidence": "Homepage's H1/description content is only 4 words: 'Be the nextAI all-star' (expected: A clear statement of what the business does, visible immediately)",
+      "evidence_detail": [
+        {
+          "url": "https://www.shopify.com/",
+          "signal": "orientation_text_thin",
+          "observation": "Homepage's H1/description content is only 4 words: 'Be the nextAI all-star'",
+          "expected": "A clear statement of what the business does, visible immediately",
+          "confidence": 0.65
+        }
+      ],
+      "affected_urls": [
+        "https://www.shopify.com/"
+      ],
+      "related_group": null,
+      "priority_rank": 1,
+      "suggested_action": {
+        "summary": "Give the homepage a clear, concrete H1 (and supporting sentence) that tells a first-time visitor what the business does within the first screen of content.",
+        "priority": "critical",
+        "rationale": null,
+        "proactive": false
+      }
+    },
+    {
+      "id": "F-001",
+      "category": "structured_data",
+      "title": "LocalBusiness structured data missing where a physical location is implied",
+      "severity": "high",
+      "confidence": 0.65,
+      "evidence": "Page text references a physical location/hours but no LocalBusiness structured data was found anywhere on the crawled site; Page text references a physical location/hours but no LocalBusiness structured data was found anywhere on the crawled site; Page text references a physical location/hours but no LocalBusiness structured data was found anywhere on the crawled site",
+      "evidence_detail": [
+        {
+          "url": "https://www.shopify.com/in",
+          "signal": "localbusiness_schema_absent",
+          "observation": "Page text references a physical location/hours but no LocalBusiness structured data was found anywhere on the crawled site",
+          "expected": null,
+          "confidence": 0.65
+        },
+        {
+          "url": "https://www.shopify.com/about",
+          "signal": "localbusiness_schema_absent",
+          "observation": "Page text references a physical location/hours but no LocalBusiness structured data was found anywhere on the crawled site",
+          "expected": null,
+          "confidence": 0.65
+        },
+        {
+          "url": "https://www.shopify.com/",
+          "signal": "localbusiness_schema_absent",
+          "observation": "Page text references a physical location/hours but no LocalBusiness structured data was found anywhere on the crawled site",
+          "expected": null,
+          "confidence": 0.65
+        }
+      ],
+      "affected_urls": [
+        "https://www.shopify.com/",
+        "https://www.shopify.com/about",
+        "https://www.shopify.com/in"
+      ],
+      "related_group": null,
+      "priority_rank": 2,
+      "suggested_action": {
+        "summary": "Add LocalBusiness JSON-LD (address, openingHours, telephone, geo) to pages that describe a physical presence.",
+        "priority": "high",
+        "rationale": null,
+        "proactive": false
+      }
+    },
+    {
+      "id": "F-002",
+      "category": "content_extractability",
+      "title": "Machine-readable content does not identify a target audience",
+      "severity": "high",
+      "confidence": 0.6,
+      "evidence": "No target-audience language (e.g. 'for small businesses', 'built for teams') found across 2 key pages checked",
+      "evidence_detail": [
+        {
+          "url": "https://www.shopify.com/about",
+          "signal": "audience_language_absent",
+          "observation": "No target-audience language (e.g. 'for small businesses', 'built for teams') found across 2 key pages checked",
+          "expected": null,
+          "confidence": 0.6
+        }
+      ],
+      "affected_urls": [
+        "https://www.shopify.com/about"
+      ],
+      "related_group": null,
+      "priority_rank": 3,
+      "suggested_action": {
+        "summary": "Add explicit audience-framing language to the homepage or about page (e.g. who the product/service is designed for) so both humans and AI agents can match the right visitor to the right offering.",
+        "priority": "high",
+        "rationale": null,
+        "proactive": false
+      }
+    },
+    {
+      "id": "F-003",
+      "category": "content_extractability",
+      "title": "Machine-readable content does not establish where the business operates",
+      "severity": "high",
+      "confidence": 0.55,
+      "evidence": "No address, phone number, or structured 'address' property found across 23 crawled pages",
+      "evidence_detail": [
+        {
+          "url": "https://www.shopify.com/in",
+          "signal": "location_signal_absent",
+          "observation": "No address, phone number, or structured 'address' property found across 23 crawled pages",
+          "expected": null,
+          "confidence": 0.55
+        }
+      ],
+      "affected_urls": [
+        "https://www.shopify.com/in"
+      ],
+      "related_group": null,
+      "priority_rank": 4,
+      "suggested_action": {
+        "summary": "Publish at least one machine-readable location or contact signal (address, phone, or structured-data address property) \u2014 relevant even for online-only businesses (e.g. a registered jurisdiction or support contact).",
+        "priority": "high",
+        "rationale": null,
+        "proactive": false
+      }
+    }
+  ],
+  "limitations": [
+    "LLM interpretation layer ran in deterministic-fallback mode (no ANTHROPIC_API_KEY set); all findings and recommendations below are rule-based, not LLM-generated.",
+    "External corroboration was not performed: this build only observes and cross-checks on-site facts. No claim in this report should be read as independently verified against outside sources."
+  ]
+}
